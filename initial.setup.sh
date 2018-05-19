@@ -29,3 +29,16 @@ docker network create media
 
 # Setup the docker-compose file
 cp docker-compose.yml.TEMPLATE docker-compose.yml
+
+# setup the directories
+mkdir -p common/downloads
+mkdir -p common/media/movies
+mkdir -p common/media/tvshows
+mkdir -p couchpotato
+mkdir -p nzbget
+mkdir -p ombi
+mkdir -p plex
+mkdir -p plexpy
+mkdir -p radarr
+mkdir -p sonarr
+chown $uid:$gid ./*
