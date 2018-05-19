@@ -26,3 +26,6 @@ sudo find . -type f -exec sed -i "s/-domain-/"$domain"/g" '{}' \;
 
 # Setup the Docker Network
 docker network create media
+
+# Setup the docker-compose file
+cp docker-compose.yml.TEMPLATE docker-compose.yml
