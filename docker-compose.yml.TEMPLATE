@@ -7,9 +7,9 @@ services:
       - id.env
     environment:
       EMAIL: -email-
-      SUBDOMAINS: -domain-
+      SUBDOMAINS: www
       #EXTRA_DOMAINS: www.someotherdomain.com
-      URL: mydomain.tld
+      URL: -domain-
       VALIDATION: http
     image: linuxserver/letsencrypt
     ports:
@@ -19,14 +19,17 @@ services:
     volumes:
     - ./letsencrypt:/config:rw
     links:
-    - jenkins
+    - nzbget
+    - ombi
+    - plex
+    - plexpy
+    - radarr
+    - sonarr
   nzbget:
     container_name: nzbget
     env_file:
       - id.env
     image: linuxserver/nzbget
-    ports:
-    - 6789:6789
     restart: always
     volumes:
     - ./nzbget:/config:rw
@@ -67,8 +70,6 @@ services:
     env_file:
       - id.env
     image: linuxserver/plexpy
-    ports:
-      - 8181:8181
     restart: always
     links:
       - plex
@@ -80,8 +81,6 @@ services:
     env_file:
       - id.env
     image: linuxserver/radarr
-    ports:
-    - 7878:7878
     restart: always
     volumes:
     - ./radarr:/config:rw
@@ -93,8 +92,6 @@ services:
     env_file:
       - id.env
     image: linuxserver/sonarr
-    ports:
-    - 8989:8989
     restart: always
     volumes:
     - ./sonarr:/config:rw
