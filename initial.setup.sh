@@ -42,3 +42,6 @@ mkdir -p plexpy
 mkdir -p radarr
 mkdir -p sonarr
 chown $uid:$gid ./*
+
+# completed
+echo "Initial setup is completed. You can now run 'docker-compose up -d' to startup the mediaserver stack. The default login/password for NZBGET is nzbget/tegbzn6789"
