@@ -1,0 +1,108 @@
+version: '2.0'
+
+services:
+  letsencrypt:
+    container_name: letsencrypt
+    env_file:
+      - id.env
+    environment:
+      EMAIL: -email-
+      SUBDOMAINS: -domain-
+      #EXTRA_DOMAINS: www.someotherdomain.com
+      URL: mydomain.tld
+      VALIDATION: http
+    image: linuxserver/letsencrypt
+    ports:
+    - 443:443
+    - 80:80
+    restart: always
+    volumes:
+    - ./letsencrypt:/config:rw
+    links:
+    - jenkins
+  nzbget:
+    container_name: nzbget
+    env_file:
+      - id.env
+    image: linuxserver/nzbget
+    ports:
+    - 6789:6789
+    restart: always
+    volumes:
+    - ./nzbget:/config:rw
+    - ./common/downloads:/downloads:rw
+  ombi:
+    container_name: ombi
+    env_file:
+      - id.env
+    image: lsiodev/ombi-preview
+    ports:
+    - 3579:3579
+    restart: always
+    volumes:
+    - ./ombi:/config:rw
+    - /etc/localtime:/etc/localtime:ro
+  plex:
+    container_name: plex
+    env_file:
+      - id.env
+    environment:
+      VERSION: latest
+    image: linuxserver/plex
+    network_mode: host
+    ports:
+    - 1900:1900/udp
+    - 32400:32400
+    - 32400:32400/udp
+    - 32469:32469
+    - 32469:32469/udp
+    - 5353:5353/udp
+    restart: always
+    volumes:
+    - ./plex:/config:rw
+    - ./common/media:/data:rw
+    - ./plex/transcode:/transcode:rw
+  plexpy:
+    container_name: plexpy
+    env_file:
+      - id.env
+    image: linuxserver/plexpy
+    ports:
+      - 8181:8181
+    restart: always
+    links:
+      - plex
+    volumes:
+      - ./plexpy/config:/config:rw
+      - ./plex/Library/Application\ Support/Plex\ Media\ Server/Logs:/logs:ro
+  radarr:
+    container_name: radarr
+    env_file:
+      - id.env
+    image: linuxserver/radarr
+    ports:
+    - 7878:7878
+    restart: always
+    volumes:
+    - ./radarr:/config:rw
+    - ./common/downloads:/downloads:rw
+    - /etc/localtime:/etc/localtime:ro
+    - ./common/media/movies:/movies:rw
+  sonarr:
+    container_name: sonarr
+    env_file:
+      - id.env
+    image: linuxserver/sonarr
+    ports:
+    - 8989:8989
+    restart: always
+    volumes:
+    - ./sonarr:/config:rw
+    - ./common/downloads:/downloads:rw
+    - /etc/localtime:/etc/localtime:ro
+    - ./common/media:/tv:rw
+
+networks:
+  default:
+    external:
+      name: media
