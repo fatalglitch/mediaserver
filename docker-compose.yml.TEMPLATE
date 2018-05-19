@@ -7,7 +7,7 @@ services:
       - id.env
     environment:
       EMAIL: -email-
-      SUBDOMAINS: www
+      SUBDOMAINS: www,sonarr,radarr,nzbget,plex,ombi,plexpy
       #EXTRA_DOMAINS: www.someotherdomain.com
       URL: -domain-
       VALIDATION: http
